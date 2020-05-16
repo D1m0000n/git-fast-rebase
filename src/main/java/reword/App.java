@@ -82,7 +82,12 @@ public class App {
             if (i == commitsContent.size() - 1) {
                 currentCommitContent = currentCommitContent.replace(currentRevCommit.getFullMessage(), newCommitMessage);
             } else {
-                currentCommitContent = currentCommitContent.replace("parent " + commitsContent.get(i + 1).getName(), "parent " + prevCommitHash);
+                if (currentRevCommit.getParentCount() <= 1) {
+                    currentCommitContent = currentCommitContent.replace("parent " + currentRevCommit.getParents()[0].getName(), "parent " + prevCommitHash);
+                } else {
+                    commitsContent.set(i, null);
+                    continue;
+                }
             }
 
             header = "commit " + currentCommitContent.length() + "\0";
