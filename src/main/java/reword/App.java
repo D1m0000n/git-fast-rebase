@@ -27,7 +27,8 @@ public class App {
         .setGitDir(new File(pathToGitFolder))
         .build();
     
-        Ref head = repository.exactRef("refs/heads/master");
+        String headString = "refs/heads/" + repository.getBranch();
+        Ref head = repository.exactRef(headString);
 
         ObjectId toCommitId = head.getObjectId();
         String to = toCommitId.getName();
@@ -107,5 +108,9 @@ public class App {
 
             System.out.println(i);
         }
+
+        outputStream = new FileOutputStream(pathToGitFolder + "/" + headString, false);
+        outputStream.write((prevCommitHash + "\n").getBytes());
+        outputStream.close();
     }
 }
